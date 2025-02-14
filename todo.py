@@ -24,16 +24,33 @@ task_listbox.pack(pady=10)
 
 #create add functionality
 def add_task():
-    pass
+    task = task_entry.get()
+    if task != "":
+        task_listbox.insert(tk.END, task)
+        task_entry.delete(0, tk.END)
+    else:
+        messagebox.showwarning("Input Error", "Please enter a task")
 
 #create delete functionality
 def delete_task():
-    pass
+    try:
+        selected_task = task_listbox.curselection()
+        task_listbox.delete(selected_task)
+    except IndexError:
+        messagebox.showwarning("Selection Error", "Please select a task to delete")
 
 
 #create mark complete functionality
 def mark_complete():
-    pass
+    try:
+        selected_task = task_listbox.curselection()
+        current_task = task_listbox.get(selected_task)
+        completed_task = f"✔ {current_task}"
+        task_listbox.delete(selected_task)
+        task_listbox.insert(selected_task, completed_task)
+
+    except IndexError:
+        messagebox.showwarning("Selection Error", "Please select task to mark complete")
 
 
 
