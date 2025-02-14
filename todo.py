@@ -5,6 +5,8 @@ root = tk.Tk()
 root.geometry("400x400")
 root.config(bg="#5b5b5b")
 
+placeholder = "Enter your task here..."
+
 #creating frames for organization
 frame_input = tk.Frame(root, bg="#5b5b5b")
 frame_input.pack(pady=10)
@@ -17,6 +19,7 @@ frame_tasklist.pack(pady=10)
 
 #input box
 task_entry = tk.Entry(frame_input, width=40, bg="#b3dbc2")
+task_entry.insert(0, placeholder)
 task_entry.pack(pady=10)
 
 #create buttons (add, delete, complete)
@@ -36,6 +39,18 @@ def on_enter(event, button):
 def on_leave(event, button):
     button.config(bg="#4CAF50")
 
+#create placeholder in input bar
+def on_focus_in(event):
+    if task_entry.get() == placeholder:
+        task_entry.delete(0, tk.END)
+        task_entry.config(fg="black")
+
+def on_focus_out(event):
+    if task_entry.get() == "":
+        task_entry.insert(0, placeholder)
+        task_entry.config(fg="gray")
+
+
 add_button.bind("<Enter>", lambda event: on_enter(event, add_button))
 add_button.bind("<Leave>", lambda event: on_leave(event, add_button))
 
@@ -44,6 +59,9 @@ delete_button.bind("<Leave>", lambda event: on_leave(event, delete_button))
 
 mark_button.bind("<Enter>", lambda event: on_enter(event, mark_button))
 mark_button.bind("<Leave>", lambda event: on_leave(event, mark_button))
+
+task_entry.bind("<FocusIn>", on_focus_in)
+task_entry.bind("<FocusOut>", on_focus_out)
 
 #display task
 task_listbox = tk.Listbox(frame_tasklist, width=40, height=10, bg="#b3dbcb")
